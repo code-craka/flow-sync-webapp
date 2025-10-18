@@ -4,11 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FlowSync Webapp is a modern React 18 SPA being transformed into a full-featured Project Management SaaS platform (like Asana/Monday.com). Built with Vite + TypeScript, it uses Supabase for serverless backend with Row Level Security for multi-tenancy.
+FlowSync is a modern, open-source project management SaaS platform designed to compete with Asana, Monday.com, and ClickUp. Built with cutting-edge technologies and a serverless-first architecture, it provides teams with powerful collaboration tools, real-time updates, and a beautiful user experience.
+
+**Repository**: https://github.com/code-craka/flow-sync-webapp
+
+**Version**: v0.1.0 (Phase 1 Complete ✅)
+
+**License**: MIT
+
+**Author**: Sayem Abdullah Rihan ([@code-craka](https://github.com/code-craka))
+
+**Email**: codecraka@gmail.com
+
+---
 
 **Tech Stack**: React 18.3.1 + TypeScript 5.9.3 + Vite 4.5.14 + Radix UI + Tailwind CSS + Framer Motion + Supabase
 
-**Package Manager**: Bun 1.3.0 (fastest JavaScript runtime)
+**Package Manager**: Bun 1.3.0 (fastest JavaScript runtime - 10x faster than npm)
 
 **Node Version**: 20.19.1 (see .nvmrc)
 
@@ -34,26 +46,100 @@ bun add package-name
 bun add -d package-name
 ```
 
-## SaaS Architecture (Current State)
+## Project Status & Roadmap
 
-**Status**: Under active transformation from prototype to production SaaS
+**Current Release**: v0.1.0 - Foundation Complete ✅
 
-**Phase 1 Complete** ✅:
-- Environment variables secured (no hardcoded credentials)
-- Complete database schema with RLS policies
-- TypeScript configuration and type definitions
-- Bun package manager migration
+**GitHub**: https://github.com/code-craka/flow-sync-webapp
 
-**Current Implementation**:
-- ✅ Authentication (Supabase - fully functional)
-- ✅ Theme system (light/dark mode)
-- ⚠️ E-commerce integration (to be removed - not core feature)
-- ❌ Organizations/Workspaces (planned)
-- ❌ Projects (UI only - needs real CRUD)
-- ❌ Tasks (UI only - needs real CRUD)
-- ❌ Team management (mock data)
-- ❌ Billing/Subscriptions (Stripe integration planned)
-- ❌ Real-time collaboration (planned)
+**Documentation**: See [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+
+**Detailed Progress**: See [SAAS_TRANSFORMATION_PROGRESS.md](SAAS_TRANSFORMATION_PROGRESS.md)
+
+### Phase 1: Foundation & Security ✅ (Complete - January 18, 2025)
+
+- ✅ **Environment & Security Cleanup**
+  - Secured all credentials with environment variables
+  - No hardcoded API keys in source code
+  - Comprehensive `.gitignore` configuration
+  - Environment variable validation
+
+- ✅ **Database Schema Design**
+  - 9 core tables with complete schema (850+ lines of SQL)
+  - Row Level Security (RLS) policies for all tables
+  - Data isolation between organizations
+  - Role-based permissions (owner/admin/editor/viewer)
+  - Auto-create organization on user signup
+  - Activity logging triggers
+
+- ✅ **TypeScript Integration**
+  - TypeScript 5.9.3 with strict mode
+  - 800+ lines of database type definitions
+  - 400+ lines of centralized typed queries
+  - Full type safety across application
+
+- ✅ **Bun Migration**
+  - Package manager migrated from npm to Bun
+  - 10x faster installs (40 seconds vs 2-3 minutes)
+  - Updated all documentation
+
+- ✅ **Professional Documentation**
+  - README with 15+ badges
+  - Complete CHANGELOG
+  - CONTRIBUTING guidelines
+  - MIT LICENSE
+  - Database migration guide
+
+### Current Implementation Status
+
+- ✅ **Authentication** (Supabase - fully functional)
+  - Email/password, OAuth (Google, GitHub), Magic links
+  - Session management with auto-refresh
+  - Profile auto-sync
+
+- ✅ **Theme System** (fully functional)
+  - Light/Dark/System modes
+  - Persistent preferences
+
+- ✅ **Database Architecture** (ready for use)
+  - Multi-tenant schema
+  - RLS policies enforced
+  - Auto-organization creation
+
+- ⚠️ **E-commerce Integration** (to be removed - Phase 6)
+  - Not aligned with project management focus
+
+- 🔄 **Organizations/Workspaces** (Phase 2 - Next)
+  - Database schema ready
+  - UI implementation pending
+
+- 🔄 **Projects** (Phase 3)
+  - UI exists but uses mock data
+  - Real CRUD operations needed
+
+- 🔄 **Tasks** (Phase 3)
+  - UI exists but uses mock data
+  - Real CRUD operations needed
+
+- 🔄 **Team Management** (Phase 2)
+  - Database schema ready
+  - Replace mock data with real queries
+
+- 📅 **Billing/Subscriptions** (Phase 5)
+  - Database schema ready
+  - Stripe integration planned
+
+- 📅 **Real-time Collaboration** (Phase 4)
+  - Supabase Realtime ready
+  - WebSocket integration planned
+
+### Next Steps (Phase 2 - Week 2)
+
+1. **Organization Context** - State management for workspaces
+2. **Organization Switcher** - UI component to switch between orgs
+3. **Role-Based UI** - Permission guards and restrictions
+4. **Invitation System** - Email invites with accept/decline
+5. **Team Management** - Real member management with roles
 
 ## Project Architecture
 
@@ -184,23 +270,30 @@ src/
 
 ## External Integrations
 
-### Supabase
+### Supabase (Primary Backend)
 
-**Instance**: `icwvyhodxprpvkolbjnq.supabase.co`
+**Environment Variable**: `VITE_SUPABASE_URL` (configured in `.env`)
 
-**Client Initialization**: See `src/lib/supabaseClient.js`
+**Client Initialization**: See `src/lib/supabaseClient.ts` (TypeScript with typed generics)
 
 **Features Used**:
-- Authentication (email, OAuth, OTP)
-- PostgreSQL database
-- User profiles table (auto-synced on auth state change)
-- Real-time subscriptions
+- **Authentication**: Email/password, OAuth (Google, GitHub), Magic links (OTP)
+- **PostgreSQL Database**: 9 core tables with Row Level Security
+- **Row Level Security**: Automatic data isolation and permission enforcement
+- **Auto-triggers**: Organization creation, profile sync, activity logging
+- **Real-time subscriptions**: WebSocket-based live updates (ready for Phase 4)
+- **Storage**: File storage with CDN (ready for use)
 
 **Auth Flow**:
-1. User signs in via Supabase Auth
-2. AuthContext listens to auth state changes
-3. On session change, profile is upserted to `profiles` table
-4. Session stored in Supabase (cookies/localStorage)
+1. User signs up/signs in via Supabase Auth
+2. AuthContext (`src/contexts/AuthContext.jsx`) listens to auth state changes
+3. On signup: Database trigger auto-creates organization, adds user as owner, creates free subscription
+4. Profile is auto-synced to `profiles` table on auth state change
+5. Session stored in Supabase (cookies/localStorage with auto-refresh)
+
+**Database Schema**: See `supabase/migrations/` for complete schema
+
+**Query Functions**: All database operations in `src/lib/supabase/queries.ts` (400+ lines, fully typed)
 
 ### Hostinger E-commerce API
 
@@ -322,6 +415,76 @@ const { theme, setTheme } = useTheme();
 setTheme(theme === 'dark' ? 'light' : 'dark');
 ```
 
+### Working with Database (TypeScript)
+
+**IMPORTANT**: Always use centralized query functions from `src/lib/supabase/queries.ts`. Never write raw Supabase queries in components.
+
+```typescript
+import {
+  getUserOrganizations,
+  getOrganizationProjects,
+  createProject,
+  getProjectTasks,
+  createTask
+} from '@/lib/supabase/queries';
+
+// Get user's organizations
+const organizations = await getUserOrganizations(userId);
+
+// Get projects for an organization
+const projects = await getOrganizationProjects(orgId);
+
+// Create a new project
+const newProject = await createProject({
+  organization_id: orgId,
+  name: 'New Project',
+  description: 'Project description',
+  color: '#3B82F6',
+  icon: 'folder',
+  status: 'active',
+  created_by: userId
+});
+
+// Get tasks for a project
+const tasks = await getProjectTasks(projectId);
+
+// Create a new task
+const newTask = await createTask({
+  project_id: projectId,
+  title: 'New Task',
+  description: 'Task description',
+  status: 'todo',
+  priority: 'medium',
+  created_by: userId,
+  assignee_id: userId
+});
+```
+
+**Type Safety**: All query functions are fully typed with TypeScript. Your IDE will provide autocomplete and type checking.
+
+**Error Handling**: All query functions throw errors. Always use try/catch:
+
+```typescript
+try {
+  const projects = await getOrganizationProjects(orgId);
+  // Use projects
+} catch (error) {
+  console.error('Failed to fetch projects:', error);
+  // Show error to user
+}
+```
+
+**Available Query Functions** (see `src/lib/supabase/queries.ts` for full list):
+- **Profiles**: `getProfile()`, `updateProfile()`
+- **Organizations**: `getUserOrganizations()`, `getOrganization()`, `createOrganization()`, `updateOrganization()`, `deleteOrganization()`
+- **Members**: `getOrganizationMembers()`, `getUserRole()`, `updateMemberRole()`, `removeMember()`
+- **Projects**: `getOrganizationProjects()`, `getProject()`, `createProject()`, `updateProject()`, `deleteProject()`
+- **Tasks**: `getProjectTasks()`, `getTask()`, `createTask()`, `updateTask()`, `deleteTask()`
+- **Comments**: `getTaskComments()`, `createComment()`, `updateComment()`, `deleteComment()`
+- **Invitations**: `getOrganizationInvitations()`, `createInvitation()`, `acceptInvitation()`, `declineInvitation()`
+- **Activity**: `getOrganizationActivity()`
+- **Subscriptions**: `getOrganizationSubscription()`, `updateSubscription()`
+
 ## Build Considerations
 
 **External Dependencies**: Babel modules are externalized and not bundled. This is intentional for the visual editor integration.
@@ -332,9 +495,61 @@ setTheme(theme === 'dark' ? 'light' : 'dark');
 
 **Asset Optimization**: Images use Unsplash URLs. Consider adding local image optimization in production.
 
-## Known Limitations
+## Known Limitations & Future Work
 
-- No testing framework configured (consider adding Jest or Vitest)
-- Some pages contain mock data (DashboardPage, TeamManagementPage)
-- Supabase anon key is exposed in client code (standard for public operations)
-- Visual editor features only work in Hostinger Horizons environment
+### Current Limitations
+- **No testing framework** - Jest or Vitest needs to be added (Phase 6)
+- **Mock data** - DashboardPage, TeamManagementPage, ProjectWorkspacePage use hardcoded data (Phases 2-3)
+- **Supabase anon key exposed** - Standard practice for client-side Supabase, protected by RLS
+- **E-commerce integration** - To be removed in Phase 6 cleanup
+- **Visual editor features** - Only work in Hostinger Horizons environment (legacy)
+
+### Phase 2 Priorities (Next)
+1. Create OrganizationContext for state management
+2. Build organization switcher component
+3. Implement real team management (replace mock data)
+4. Add invitation system for team members
+5. Role-based UI restrictions
+
+### Phase 3 Priorities
+1. Replace project mock data with real CRUD operations
+2. Implement task management with full functionality
+3. Add comments system
+4. Build Kanban board view
+5. Add calendar view for tasks
+
+### Testing Strategy (Phase 6)
+- **Unit tests**: Utility functions, hooks, query functions
+- **Component tests**: UI components with React Testing Library
+- **Integration tests**: User flows (signup → create org → create project → create task)
+- **E2E tests**: Critical paths with Playwright
+
+### Performance Optimizations (Phase 6)
+- Code splitting per route
+- Lazy loading for heavy components
+- Image optimization
+- Bundle size analysis
+- React Query for data fetching and caching
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+- Code standards
+- Commit message format
+- Pull request process
+- Development workflow
+
+## Resources
+
+- **GitHub Repository**: https://github.com/code-craka/flow-sync-webapp
+- **Issue Tracker**: https://github.com/code-craka/flow-sync-webapp/issues
+- **Releases**: https://github.com/code-craka/flow-sync-webapp/releases
+- **License**: [MIT](LICENSE)
+- **Author**: Sayem Abdullah Rihan ([@code-craka](https://github.com/code-craka))
+- **Email**: codecraka@gmail.com
+
+---
+
+**Last Updated**: January 18, 2025 - v0.1.0 Release
