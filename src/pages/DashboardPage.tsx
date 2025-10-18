@@ -20,7 +20,10 @@ import { useOrganization } from '@/contexts/OrganizationContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useUsageLimits } from '@/hooks/useUsageLimits';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 import { CreateProjectDialog } from '@/components/projects/CreateProjectDialog';
+import { UpgradePrompt } from '@/components/billing/UpgradePrompt';
 import { getOrganizationProjects, deleteProject } from '@/lib/supabase/queries';
 import type { Project } from '@/types';
 
@@ -146,10 +149,13 @@ const DashboardPage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { canManageProjects } = usePermissions();
+  const { canCreate, isAtLimit } = useUsageLimits();
+  const { markProjectCreated } = useOnboardingProgress();
   const navigate = useNavigate();
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
   useEffect(() => {
     if (currentOrganization) {
@@ -164,6 +170,11 @@ const DashboardPage = () => {
       setLoading(true);
       const orgProjects = await getOrganizationProjects(currentOrganization.id);
       setProjects(orgProjects);
+
+      // Mark onboarding step complete if user has projects
+      if (orgProjects.length > 0) {
+        markProjectCreated();
+      }
     } catch (error) {
       console.error('Failed to load projects:', error);
       toast({
@@ -226,8 +237,23 @@ const DashboardPage = () => {
           <h1 className="text-3xl font-bold tracking-tight gradient-text">My Dashboard</h1>
           <p className="text-muted-foreground mt-1">{currentOrganization.name}</p>
         </div>
-        {canManageProjects && <CreateProjectDialog onProjectCreated={loadProjects} />}
+        {canManageProjects && (
+          canCreate('projects') ? (
+            <CreateProjectDialog onProjectCreated={loadProjects} />
+          ) : (
+            <Button onClick={() => setShowUpgradePrompt(true)}>
+              Create Project
+            </Button>
+          )
+        )}
       </div>
+
+      {/* Upgrade Prompt Modal */}
+      <UpgradePrompt
+        isOpen={showUpgradePrompt}
+        onClose={() => setShowUpgradePrompt(false)}
+        limitType="projects"
+      />
 
       {/* Loading State */}
       {loading && (
@@ -245,7 +271,15 @@ const DashboardPage = () => {
             <p className="text-muted-foreground text-center mb-4">
               Get started by creating your first project.
             </p>
-            {canManageProjects && <CreateProjectDialog onProjectCreated={loadProjects} />}
+            {canManageProjects && (
+              canCreate('projects') ? (
+                <CreateProjectDialog onProjectCreated={loadProjects} />
+              ) : (
+                <Button onClick={() => setShowUpgradePrompt(true)}>
+                  Create Project
+                </Button>
+              )
+            )}
           </CardContent>
         </Card>
       )}

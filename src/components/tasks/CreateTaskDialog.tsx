@@ -22,8 +22,11 @@ import {
 } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
+import { useUsageLimits } from '@/hooks/useUsageLimits';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 import { createTask, getOrganizationMembers } from '@/lib/supabase/queries';
 import { useOrganization } from '@/contexts/OrganizationContext';
+import { UpgradePrompt } from '@/components/billing/UpgradePrompt';
 import type { TaskStatus, TaskPriority } from '@/types';
 
 interface CreateTaskDialogProps {
@@ -36,8 +39,11 @@ export function CreateTaskDialog({ projectId, trigger, onTaskCreated }: CreateTa
   const { user } = useAuth();
   const { currentOrganization } = useOrganization();
   const { toast } = useToast();
+  const { canCreate } = useUsageLimits();
+  const { markTaskCreated } = useOnboardingProgress();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<TaskStatus>('todo');
@@ -46,6 +52,14 @@ export function CreateTaskDialog({ projectId, trigger, onTaskCreated }: CreateTa
   const [dueDate, setDueDate] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [members, setMembers] = useState<any[]>([]);
+
+  const handleOpenDialog = () => {
+    if (!canCreate('tasks')) {
+      setShowUpgradePrompt(true);
+      return;
+    }
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     if (isOpen && currentOrganization) {
@@ -99,6 +113,9 @@ export function CreateTaskDialog({ projectId, trigger, onTaskCreated }: CreateTa
         variant: 'success',
       });
 
+      // Mark onboarding step complete
+      markTaskCreated();
+
       // Reset form
       setTitle('');
       setDescription('');
@@ -126,15 +143,20 @@ export function CreateTaskDialog({ projectId, trigger, onTaskCreated }: CreateTa
   };
 
   const defaultTrigger = (
-    <Button size="sm">
+    <Button size="sm" onClick={handleOpenDialog}>
       <Plus className="mr-2 h-4 w-4" />
       New Task
     </Button>
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{trigger || defaultTrigger}</DialogTrigger>
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        {trigger ? (
+          <div onClick={handleOpenDialog}>{trigger}</div>
+        ) : (
+          defaultTrigger
+        )}
       <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle>Create New Task</DialogTitle>
@@ -264,5 +286,12 @@ export function CreateTaskDialog({ projectId, trigger, onTaskCreated }: CreateTa
         </form>
       </DialogContent>
     </Dialog>
+
+      <UpgradePrompt
+        isOpen={showUpgradePrompt}
+        onClose={() => setShowUpgradePrompt(false)}
+        limitType="tasks"
+      />
+    </>
   );
 }

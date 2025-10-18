@@ -48,19 +48,19 @@ export function UpgradePrompt({
     const limitMessages = {
       projects: {
         title: 'Project Limit Reached',
-        description: 'You've reached your limit of 3 projects on the Free plan. Upgrade to Pro for unlimited projects and advanced features.',
+        description: "You've reached your limit of 3 projects on the Free plan. Upgrade to Pro for unlimited projects and advanced features.",
       },
       members: {
         title: 'Team Member Limit Reached',
-        description: 'You've reached your limit of 5 team members on the Free plan. Upgrade to Pro to add up to 25 members.',
+        description: "You've reached your limit of 5 team members on the Free plan. Upgrade to Pro to add up to 25 members.",
       },
       tasks: {
         title: 'Task Limit Reached',
-        description: 'You've reached your limit of 100 tasks per project on the Free plan. Upgrade to Pro for unlimited tasks.',
+        description: "You've reached your limit of 100 tasks per project on the Free plan. Upgrade to Pro for unlimited tasks.",
       },
       storage: {
         title: 'Storage Limit Reached',
-        description: 'You've reached your 1GB storage limit on the Free plan. Upgrade to Pro for 50GB of storage.',
+        description: "You've reached your 1GB storage limit on the Free plan. Upgrade to Pro for 50GB of storage.",
       },
     };
 
@@ -192,10 +192,10 @@ export function InlineUpgradePrompt({ feature, limitType, onUpgrade }: InlineUpg
 
   const getMessage = () => {
     const messages = {
-      projects: 'You've reached your project limit.',
-      members: 'You've reached your team member limit.',
-      tasks: 'You've reached your task limit.',
-      storage: 'You've reached your storage limit.',
+      projects: "You've reached your project limit.",
+      members: "You've reached your team member limit.",
+      tasks: "You've reached your task limit.",
+      storage: "You've reached your storage limit.",
     };
 
     if (limitType) {

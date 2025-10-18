@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 import { createProject } from '@/lib/supabase/queries';
 import type { ProjectStatus } from '@/types';
 
@@ -43,6 +44,7 @@ export function CreateProjectDialog({ trigger, onProjectCreated }: CreateProject
   const { currentOrganization } = useOrganization();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { markProjectCreated } = useOnboardingProgress();
 
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
@@ -90,6 +92,9 @@ export function CreateProjectDialog({ trigger, onProjectCreated }: CreateProject
       setColor(PROJECT_COLORS[0].value);
       setIcon(PROJECT_ICONS[0]);
       setIsOpen(false);
+
+      // Mark onboarding step complete
+      markProjectCreated();
 
       // Callback to refresh project list
       if (onProjectCreated) {

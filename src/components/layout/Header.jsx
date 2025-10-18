@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ShoppingCart as ShoppingCartIcon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
@@ -14,13 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useCart } from '@/hooks/useCart';
 
 const navLinks = [
   { name: 'Features', path: '/#features' },
   { name: 'Pricing', path: '/pricing' },
-  { name: 'Store', path: '/store' },
-  { name: 'Polar Store', path: '/polar-store' },
   { name: 'Resources', path: '/resources/documentation' },
   { name: 'Company', path: '/company/about' },
 ];
@@ -29,7 +26,6 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { session, user, signOut } = useAuth();
-  const { toggleCart, cartItemCount } = useCart();
   const location = useLocation();
 
   const handleScroll = () => {
@@ -121,14 +117,6 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" onClick={toggleCart} className="relative text-white hover:bg-gray-700">
-              <ShoppingCartIcon className="h-5 w-5" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
-                  {cartItemCount}
-                </span>
-              )}
-            </Button>
             {session ? (
               <UserAvatar />
             ) : (

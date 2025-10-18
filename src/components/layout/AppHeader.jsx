@@ -6,12 +6,10 @@ import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Bell, Search, Menu, Settings as SettingsIcon, LogOut, LayoutDashboard, FileText, CalendarDays, Sparkles, Zap, Moon, Sun, Monitor, MessageSquare, ShoppingCart } from 'lucide-react';
+import { Bell, Search, Menu, Settings as SettingsIcon, LogOut, LayoutDashboard, FileText, CalendarDays, Sparkles, Zap, Moon, Sun, Monitor, MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useCart } from '@/hooks/useCart';
-import ShoppingCartSidebar from '@/components/ShoppingCart';
 import { OrganizationSwitcher } from '@/components/shared/OrganizationSwitcher';
 import { NotificationBell } from '@/components/shared/NotificationBell';
 
@@ -22,10 +20,6 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
   const { theme, setTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const { cartItems } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleSignOut = async () => {
     try {
@@ -47,7 +41,6 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
   
   const navLinks = [
     { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/store", label: "Store", icon: ShoppingCart },
     { to: "/app/templates", label: "Templates", icon: FileText },
     { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
   ];
@@ -119,21 +112,6 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
           />
         </div>
         
-        <Button
-            variant="ghost"
-            size="icon"
-            className="relative"
-            onClick={() => setIsCartOpen(true)}
-          >
-          <ShoppingCart className="h-5 w-5" />
-            {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                {totalItems}
-              </span>
-            )}
-          <span className="sr-only">Shopping Cart</span>
-        </Button>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
@@ -189,7 +167,6 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
         </DropdownMenu>
       </div>
     </header>
-    <ShoppingCartSidebar isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
     </>
   );
 };

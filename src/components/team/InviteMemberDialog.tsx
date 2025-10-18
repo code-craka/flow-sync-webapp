@@ -21,8 +21,11 @@ import {
 } from '@/components/ui/select';
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useToast } from '@/components/ui/use-toast';
+import { useUsageLimits } from '@/hooks/useUsageLimits';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 import { createInvitation } from '@/lib/supabase/queries';
 import { useAuth } from '@/contexts/AuthContext';
+import { UpgradePrompt } from '@/components/billing/UpgradePrompt';
 import type { MemberRole } from '@/types';
 
 interface InviteMemberDialogProps {
@@ -34,11 +37,22 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
   const { currentOrganization } = useOrganization();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { canCreate } = useUsageLimits();
+  const { markMemberInvited } = useOnboardingProgress();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<MemberRole>('viewer');
   const [isInviting, setIsInviting] = useState(false);
+
+  const handleOpenDialog = () => {
+    if (!canCreate('members')) {
+      setShowUpgradePrompt(true);
+      return;
+    }
+    setIsOpen(true);
+  };
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +85,9 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
         variant: 'success',
       });
 
+      // Mark onboarding step complete
+      markMemberInvited();
+
       // Reset form and close dialog
       setEmail('');
       setRole('viewer');
@@ -89,15 +106,20 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
   };
 
   const defaultTrigger = (
-    <Button>
+    <Button onClick={handleOpenDialog}>
       <UserPlus className="mr-2 h-4 w-4" />
       Invite Member
     </Button>
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{trigger || defaultTrigger}</DialogTrigger>
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        {trigger ? (
+          <div onClick={handleOpenDialog}>{trigger}</div>
+        ) : (
+          defaultTrigger
+        )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Invite Team Member</DialogTitle>
@@ -193,5 +215,12 @@ export function InviteMemberDialog({ trigger }: InviteMemberDialogProps) {
         </form>
       </DialogContent>
     </Dialog>
+
+      <UpgradePrompt
+        isOpen={showUpgradePrompt}
+        onClose={() => setShowUpgradePrompt(false)}
+        limitType="members"
+      />
+    </>
   );
 }
