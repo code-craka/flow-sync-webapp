@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* Light mode background */
+    --foreground: 222.2 84% 4.9%; /* Light mode text */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    --primary: 260 85% 60%; /* Adjusted primary for vibrancy */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+    
+    --secondary: 240 5% 96%; /* Lighter secondary */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%; /* Softer muted text */
+    
+    --accent: 240 5% 90%; /* Slightly darker accent */
+    --accent-foreground: 222.2 47.4% 11.2%;
+    
+    --destructive: 0 72% 51%; /* More vibrant destructive */
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 240 6% 90%;
+    --input: 240 6% 90%; /* Input border */
+    --ring: 260 85% 65%; /* Ring color related to primary */
+    
+    --radius: 0.75rem; /* Default radius, can be overridden by specific classes like rounded-2xl */
+  }
+
+  .dark {
+    --background: 220 18% 11%; /* Dark mode background */
+    --foreground: 210 40% 98%; /* Dark mode text */
+    
+    --card: 220 15% 15%; /* Darker card */
+    --card-foreground: 210 40% 98%;
+    --popover: 220 18% 11%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 260 80% 65%; /* Vibrant primary for dark mode */
+    --primary-foreground: 220 15% 10%; /* Dark text on primary */
+    
+    --secondary: 220 15% 20%; /* Darker secondary */
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 220 15% 20%;
+    --muted-foreground: 215 20% 65%; /* Lighter muted text for dark mode */
+    
+    --accent: 220 15% 25%; /* Darker accent */
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 63% 40%; /* Darker destructive */
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 220 15% 25%;
+    --input: 220 15% 25%; /* Input border for dark mode */
+    --ring: 260 80% 70%; /* Ring for dark mode */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply antialiased; /* Smoother fonts */
+  }
+  /* Fluid font scaling example */
+  h1 { @apply text-3xl md:text-4xl lg:text-5xl; }
+  h2 { @apply text-2xl md:text-3xl lg:text-4xl; }
+  h3 { @apply text-xl md:text-2xl lg:text-3xl; }
+  p, span, div, li, button, input, label, textarea { @apply text-base; } /* Ensure base font size consistency */
+
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-pink-500;
+}
+
+/* Soft shadows for cards and interactive elements */
+.soft-shadow {
+  @apply shadow-[0_4px_16px_rgba(0,0,0,0.05),_0_2px_8px_rgba(0,0,0,0.04)];
+}
+.soft-shadow-hover {
+  @apply hover:shadow-[0_8px_24px_rgba(0,0,0,0.07),_0_4px_12px_rgba(0,0,0,0.06)];
+}
+
+.dark .soft-shadow {
+   @apply shadow-[0_4px_16px_rgba(0,0,0,0.2),_0_2px_8px_rgba(0,0,0,0.15)];
+}
+.dark .soft-shadow-hover {
+  @apply hover:shadow-[0_8px_24px_rgba(0,0,0,0.25),_0_4px_12px_rgba(0,0,0,0.2)];
+}
+
+
+.hero-gradient {
+  background: linear-gradient(to right, rgba(var(--primary), 0.8), rgba(147, 51, 234, 0.8));
+}
+
+.feature-card {
+  @apply relative overflow-hidden rounded-2xl border border-border p-6 transition-all duration-300 soft-shadow soft-shadow-hover;
+  background: hsl(var(--card) / 0.8); /* Semi-transparent card background */
+  backdrop-filter: blur(8px);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, hsl(var(--primary)), #9333ea);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.blob-animation {
+  animation: blob-move 25s infinite alternate;
+}
+
+@keyframes blob-move {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(5%, 10%) scale(1.1);
+  }
+  66% {
+    transform: translate(-5%, -5%) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Consistent Spacing Grid (Example utility classes) */
+.content-grid {
+  @apply grid gap-4 md:gap-6 lg:gap-8;
+}
+.section-padding {
+  @apply py-8 md:py-12 lg:py-16;
+}
+.container-padding {
+  @apply px-4 md:px-6 lg:px-8;
+}
+
+/* Button hover and active effects are handled by shadcn/ui variants and Tailwind's hover: and active: prefixes */
