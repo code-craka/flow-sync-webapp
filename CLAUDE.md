@@ -8,7 +8,7 @@ FlowSync is a modern, open-source project management SaaS platform designed to c
 
 **Repository**: https://github.com/code-craka/flow-sync-webapp
 
-**Version**: v0.1.0 (Phase 1 Complete ✅)
+**Version**: v0.5.0 (Phases 1-5 Complete ✅)
 
 **License**: MIT
 
@@ -48,7 +48,9 @@ bun add -d package-name
 
 ## Project Status & Roadmap
 
-**Current Release**: v0.1.0 - Foundation Complete ✅
+**Current Release**: v0.5.0 - Billing & Real-time Collaboration Complete ✅
+
+**Overall Progress**: ~85% Complete (Phases 1-5 Done, Phase 6 remaining)
 
 **GitHub**: https://github.com/code-craka/flow-sync-webapp
 
@@ -90,6 +92,59 @@ bun add -d package-name
   - MIT LICENSE
   - Database migration guide
 
+### Phase 2: Multi-Tenancy & Team Collaboration ✅ (Complete - January 18, 2025)
+
+- ✅ **Organization System (Phase 2.1)**
+  - OrganizationContext with full CRUD operations
+  - Organization switcher in app header
+  - Auto-slug generation, localStorage persistence
+  - Organization settings page with logo upload ready
+
+- ✅ **Role-Based Access Control (Phase 2.2)**
+  - usePermissions hook with granular checks
+  - PermissionGuard component for conditional rendering
+  - Permission hierarchy: owner > admin > editor > viewer
+  - UI restrictions based on user role
+
+- ✅ **Invitation System (Phase 2.3)**
+  - Email invitations with role selection
+  - Token-based acceptance/decline flow
+  - Public invitation page (/accept-invitation)
+  - Pending invitations management
+  - 7-day expiration with validation
+
+- ✅ **Team Management (Phase 2.4)**
+  - Real organization members from database
+  - Role change functionality (admin+)
+  - Member removal with confirmation
+  - InviteMemberDialog integration
+  - PendingInvitations component
+
+### Phase 3: Project & Task Management ✅ (Complete - January 18, 2025)
+
+- ✅ **Project Management (Phase 3.1)**
+  - CreateProjectDialog with color/icon selection
+  - Real project CRUD operations
+  - Project cards with click-to-navigate
+  - Project deletion with cascade
+  - Permission-based create/delete
+
+- ✅ **Task Management (Phase 3.2)**
+  - CreateTaskDialog with full task details
+  - TaskListView grouped by status
+  - Task completion toggle (checkbox)
+  - Task deletion with confirmation
+  - Priority/status badges, due date display
+  - Assignee selection from org members
+
+- ✅ **Task Details & Comments (Phase 3.3)**
+  - TaskDetailModal with inline editing
+  - Full task field editing (title, description, status, priority, assignee, due date)
+  - TaskComments component with real-time updates
+  - Comment creation and deletion
+  - Permission-based edit/delete buttons
+  - Time-ago formatting
+
 ### Current Implementation Status
 
 - ✅ **Authentication** (Supabase - fully functional)
@@ -101,45 +156,105 @@ bun add -d package-name
   - Light/Dark/System modes
   - Persistent preferences
 
-- ✅ **Database Architecture** (ready for use)
-  - Multi-tenant schema
-  - RLS policies enforced
-  - Auto-organization creation
+- ✅ **Multi-Tenancy** (fully functional)
+  - Organization CRUD operations
+  - Organization switcher
+  - Data isolation via RLS policies
+  - Auto-organization on signup
+
+- ✅ **Team Management** (fully functional)
+  - Invite members via email
+  - Accept/decline invitations
+  - Role management (owner/admin/editor/viewer)
+  - Member removal
+
+- ✅ **Projects** (fully functional)
+  - Create, view, navigate, delete
+  - Color-coded project cards
+  - Permission-based actions
+
+- ✅ **Tasks** (fully functional)
+  - Create, view, update, delete, complete
+  - Task detail modal with inline editing
+  - Comments on tasks
+  - Assignee and due date management
+  - Status and priority tracking
+
+- ✅ **Real-time Collaboration** (fully functional)
+  - Live task and comment updates via WebSocket
+  - Online presence indicators showing who's online
+  - Real-time activity feed for all organization actions
+  - In-app notification system with bell icon
+  - Broadcast messaging for typing indicators
+
+- ✅ **Billing & Subscriptions** (fully functional)
+  - Polar payment integration (indie hacker friendly)
+  - 3 subscription plans (Free, Pro $15/mo, Enterprise $49/mo)
+  - Usage limits enforcement (projects, members, tasks, storage)
+  - Subscription management UI (cancel, reactivate, change plans)
+  - Usage metrics dashboard with progress bars
+  - Contextual upgrade prompts when hitting limits
 
 - ⚠️ **E-commerce Integration** (to be removed - Phase 6)
   - Not aligned with project management focus
 
-- 🔄 **Organizations/Workspaces** (Phase 2 - Next)
-  - Database schema ready
-  - UI implementation pending
+### Phase 4: Real-time Collaboration ✅ (Complete - January 18, 2025)
 
-- 🔄 **Projects** (Phase 3)
-  - UI exists but uses mock data
-  - Real CRUD operations needed
+- ✅ **Real-time Infrastructure (Phase 4.1)**
+  - RealtimeContext for WebSocket connection management
+  - useRealtimeSubscription hook for database changes
+  - Real-time task and comment updates
+  - Channel subscription/unsubscription with auto-cleanup
+  - Broadcast messaging and event listening
 
-- 🔄 **Tasks** (Phase 3)
-  - UI exists but uses mock data
-  - Real CRUD operations needed
+- ✅ **Presence & Activity (Phase 4.2)**
+  - usePresence hook for tracking online users
+  - OnlineUsers component with avatar stacks
+  - Green "online" indicators
+  - ActivityFeed component with live updates
+  - Real-time activity stream with animations
+  - Time-ago formatting for activity items
 
-- 🔄 **Team Management** (Phase 2)
-  - Database schema ready
-  - Replace mock data with real queries
+- ✅ **Notification System (Phase 4.3)**
+  - NotificationContext for centralized notifications
+  - NotificationBell component in app header
+  - Unread count badge
+  - Mark as read/unread functionality
+  - Persistent notifications with localStorage
+  - Toast notifications for instant feedback
 
-- 📅 **Billing/Subscriptions** (Phase 5)
-  - Database schema ready
-  - Stripe integration planned
+### Phase 5: Billing & Subscriptions (Polar) ✅ (Complete - January 18, 2025)
 
-- 📅 **Real-time Collaboration** (Phase 4)
-  - Supabase Realtime ready
-  - WebSocket integration planned
+- ✅ **Polar Integration (Phase 5.1)**
+  - Polar API client with 15+ functions (`polarClient.ts`)
+  - PricingPlans component with 3 subscription tiers
+  - CheckoutSuccessPage with payment verification
+  - Secure Polar-hosted checkout pages
+  - Monthly/yearly billing toggle with savings calculator
 
-### Next Steps (Phase 2 - Week 2)
+- ✅ **Subscription Management (Phase 5.2)**
+  - SubscriptionContext for global subscription state
+  - SubscriptionSettings component
+  - Cancel/reactivate subscription flows
+  - Subscription status indicators
+  - Integration with Polar customer portal
 
-1. **Organization Context** - State management for workspaces
-2. **Organization Switcher** - UI component to switch between orgs
-3. **Role-Based UI** - Permission guards and restrictions
-4. **Invitation System** - Email invites with accept/decline
-5. **Team Management** - Real member management with roles
+- ✅ **Usage Limits & Enforcement (Phase 5.3)**
+  - useUsageLimits hook for real-time usage tracking
+  - UsageMetrics component with visual progress bars
+  - Automatic limit enforcement on actions
+  - UpgradePrompt modal for contextual upgrades
+  - InlineUpgradePrompt for smaller CTAs
+  - Colored progress indicators (green/yellow/orange/red)
+
+### Next Steps (Phase 6)
+
+**Phase 6: Polish & Production**
+1. Remove e-commerce features
+2. Add error boundaries
+3. Testing framework setup
+4. Performance optimizations
+5. Production deployment
 
 ## Project Architecture
 
@@ -162,27 +277,36 @@ bun add -d package-name
 src/
 ├── api/                    # API clients (EcommerceApi - to be removed)
 ├── components/
-│   ├── ui/                # Radix UI wrappers (button, card, dialog, etc.)
-│   ├── layout/            # Layout components (Header, Sidebar, AppLayout)
+│   ├── ui/                # Radix UI wrappers (button, card, dialog, checkbox, badge, etc.)
+│   ├── layout/            # Layout components (Header, Sidebar, AppLayout, AppHeader)
 │   ├── sections/          # Landing page sections (Hero, Features, Pricing)
-│   └── shared/            # Shared components (AiAssistantButton)
-├── contexts/              # React contexts (Auth, Theme, Organization - TBD)
-├── hooks/                 # Custom hooks (useCart, useOrganization - TBD)
+│   ├── shared/            # Shared components (OrganizationSwitcher, PermissionGuard)
+│   ├── settings/          # Settings components (OrganizationSettings)
+│   ├── team/              # Team management (InviteMemberDialog, PendingInvitations)
+│   ├── projects/          # Project components (CreateProjectDialog)
+│   └── tasks/             # Task components (CreateTaskDialog, TaskListView, TaskDetailModal, TaskComments)
+├── contexts/              # React contexts (Auth, Theme, Organization)
+├── hooks/                 # Custom hooks (useCart, usePermissions, useOrganization)
 ├── lib/                   # Utilities and database functions
 │   ├── supabaseClient.ts  # Typed Supabase client
 │   ├── supabase/
-│   │   └── queries.ts     # Centralized database queries
+│   │   └── queries.ts     # Centralized database queries (400+ lines)
 │   └── utils.js
 ├── types/                 # TypeScript type definitions
-│   ├── database.ts        # Auto-generated database types
+│   ├── database.ts        # Auto-generated database types (800+ lines)
 │   └── index.ts           # Application types
 ├── pages/                 # Route components organized by feature
-│   ├── auth/
-│   ├── legal/
-│   ├── resources/
-│   └── company/
+│   ├── auth/              # SignIn, SignUp
+│   ├── legal/             # Terms, Privacy
+│   ├── resources/         # Docs, Guides, Blog, Support
+│   ├── company/           # About, Careers, Contact
+│   ├── DashboardPage.tsx  # Project dashboard
+│   ├── ProjectWorkspacePage.tsx  # Task management
+│   ├── TeamManagementPage.tsx    # Team members
+│   ├── SettingsPage.jsx   # User/org settings
+│   └── AcceptInvitationPage.tsx  # Public invitation page
 └── supabase/              # Database migrations
-    ├── migrations/        # SQL migration files with RLS policies
+    ├── migrations/        # SQL migration files with RLS policies (850+ lines)
     └── README.md          # Migration documentation
 ```
 
@@ -221,15 +345,22 @@ src/
 ### State Management
 
 **Global State**:
-- AuthContext: User session, auth methods (signIn, signUp, signOut)
-- ThemeContext: Theme state (light/dark) and toggle function
-- useCart: Shopping cart with localStorage persistence
+- **AuthContext**: User session, auth methods (signIn, signUp, signOut)
+- **ThemeContext**: Theme state (light/dark) and toggle function
+- **OrganizationContext**: Current org, org list, switch/create/update/delete, role detection
+- **useCart**: Shopping cart with localStorage persistence (to be removed)
+
+**Custom Hooks**:
+- **usePermissions**: Permission checking with granular flags (canEdit, canDelete, etc.)
+- **useOrganization**: Organization state and operations
+- **useAuth**: Authentication state and methods
+- **useTheme**: Theme state and toggle
 
 **Local State**: Use React.useState for component-specific state. No Redux or other global state libraries.
 
 **Persistence**:
-- localStorage: Cart items (`flowsync-cart`), theme preference
-- Supabase: User profiles, authentication tokens
+- localStorage: Cart items (`flowsync-cart`), theme preference, current organization ID (`flowsync-current-org`)
+- Supabase: User profiles, organizations, projects, tasks, comments, invitations
 
 ## Configuration Files
 
@@ -339,14 +470,160 @@ src/
 - `/auth/signup` - Sign up
 
 ### Protected App Routes (requires session)
-- `/app/dashboard` - Main dashboard
-- `/app/project/:projectId` - Project workspace
-- `/app/team` - Team management
-- `/app/templates` - Templates library
-- `/app/calendar` - Calendar
-- `/app/settings` - User settings
+- `/app/dashboard` - Project dashboard with real data
+- `/app/project/:projectId` - Project workspace with task management
+- `/app/team` - Team management with invitations
+- `/app/templates` - Templates library (placeholder)
+- `/app/calendar` - Calendar (placeholder)
+- `/app/settings` - User and organization settings
+
+### Special Routes
+- `/accept-invitation?token=xxx` - Public invitation acceptance page
 
 **Fallback**: Redirects to `/app/dashboard` if authenticated, otherwise `/`
+
+## Key Components Reference
+
+### Organization Management
+
+**OrganizationContext** (`src/contexts/OrganizationContext.tsx`)
+- Manages current organization state
+- Provides CRUD operations for organizations
+- Handles organization switching with localStorage persistence
+- Auto-loads user role for permission checking
+- **Key exports**: `currentOrganization`, `organizations`, `switchOrganization`, `createOrganization`, `updateOrganization`, `deleteOrganization`, `getUserRole`, `hasPermission`
+
+**OrganizationSwitcher** (`src/components/shared/OrganizationSwitcher.tsx`)
+- Dropdown for switching between organizations
+- Create organization dialog with auto-slug generation
+- Displays current organization with Building2 icon
+- Integrated in AppHeader
+
+**OrganizationSettings** (`src/components/settings/OrganizationSettings.tsx`)
+- Update organization name and slug
+- Logo upload (ready for Supabase Storage)
+- Organization ID display for API integrations
+- Danger zone with delete confirmation (owner only)
+- Permission-based UI (admin+ for editing)
+
+### Team Management
+
+**TeamManagementPage** (`src/pages/TeamManagementPage.tsx`)
+- Real member list from database
+- Role badges with icons (Crown, Shield, Edit, Eye)
+- Role change dropdown (admin+)
+- Member removal with confirmation (admin+)
+- Integrated InviteMemberDialog and PendingInvitations
+
+**InviteMemberDialog** (`src/components/team/InviteMemberDialog.tsx`)
+- Email input with validation
+- Role selection (Owner/Admin/Editor/Viewer) with descriptions
+- Creates invitation with 7-day expiration token
+- Toast notifications on success/failure
+
+**PendingInvitations** (`src/components/team/PendingInvitations.tsx`)
+- Lists all pending invitations
+- Copy invitation link to clipboard
+- Revoke invitation with confirmation
+- Time-ago formatting and expiration warnings
+
+**AcceptInvitationPage** (`src/pages/AcceptInvitationPage.tsx`)
+- Public page accessible via token
+- Token validation and expiration checking
+- Accept button (redirects to signup if not logged in)
+- Decline button
+- Email mismatch warning
+
+### Project Management
+
+**DashboardPage** (`src/pages/DashboardPage.tsx`)
+- Grid of project cards (responsive 1-4 columns)
+- Real data from `getOrganizationProjects()`
+- Color-coded project headers with Folder icon
+- Click to navigate to project workspace
+- Create project button (permission-based)
+- Delete project with confirmation
+- Loading and empty states
+
+**CreateProjectDialog** (`src/components/projects/CreateProjectDialog.tsx`)
+- Project name and description inputs
+- Color picker (10 preset colors)
+- Icon selection (8 icons - currently all Folder)
+- Form validation
+- Callback to refresh project list
+
+### Task Management
+
+**ProjectWorkspacePage** (`src/pages/ProjectWorkspacePage.tsx`)
+- Project header with back button and color icon
+- Create task button (permission-based)
+- Sidebar with view options (List active, Board/Calendar coming soon)
+- TaskListView integration with refresh trigger
+
+**CreateTaskDialog** (`src/components/tasks/CreateTaskDialog.tsx`)
+- Task title and description
+- Status dropdown (To Do, In Progress, Review, Done)
+- Priority dropdown (Low, Medium, High, Urgent)
+- Assignee selection from organization members
+- Due date picker
+- Form validation
+
+**TaskListView** (`src/components/tasks/TaskListView.tsx`)
+- Tasks grouped by status with count
+- Status icons (Circle, Clock, Alert, CheckCircle)
+- Priority badges with color coding
+- Checkbox for quick completion (editors+)
+- Click card to open detail modal
+- Delete button with confirmation (admins+)
+- Due date display with overdue highlighting
+- Empty state messaging
+
+**TaskDetailModal** (`src/components/tasks/TaskDetailModal.tsx`)
+- Full task details in modal dialog
+- Edit mode with inline field editing
+- Status and priority badges
+- Assignee and due date display
+- Edit/Save/Cancel buttons (permission-based)
+- Delete button with confirmation (admins+)
+- Integrated TaskComments component
+- Responsive max-width layout
+
+**TaskComments** (`src/components/tasks/TaskComments.tsx`)
+- Comment form with textarea
+- Real-time comment list with avatars
+- Time-ago formatting (just now, 5m ago, 2h ago, etc.)
+- Delete own comments with confirmation
+- Edit indicator for modified comments
+- Comment count display
+- Empty state with encouraging message
+
+### Permission System
+
+**usePermissions** (`src/hooks/usePermissions.ts`)
+- Returns user role and permission flags
+- **Role checks**: `isOwner`, `isAdmin`, `canEdit`, `canView`
+- **Organization**: `canDeleteOrganization`, `canEditOrganization`
+- **Members**: `canManageMembers`, `canInviteMembers`, `canRemoveMembers`, `canChangeRoles`
+- **Projects**: `canManageProjects`
+- **Tasks**: `canCreateTasks`, `canEditTasks`, `canDeleteTasks`, `canAssignTasks`
+- **Generic**: `hasPermission(requiredRole)` with role hierarchy
+
+**PermissionGuard** (`src/components/shared/PermissionGuard.tsx`)
+- Conditionally render children based on permissions
+- Props: `requiredRole`, `hasPermission`, `fallback`, `disableOnly`
+- Can hide completely or just disable elements
+- HOC version: `withPermission(Component, guardProps)`
+
+### UI Components (Radix wrappers in `src/components/ui/`)
+
+**Core Components**:
+- Button, Card, Input, Label, Textarea
+- Dialog, AlertDialog, DropdownMenu, Select
+- Avatar, Badge, Checkbox, Separator
+- Table, Tabs, Tooltip, Switch
+- Toast/Toaster for notifications
+
+All follow shadcn/ui patterns with Tailwind styling and CVA variants.
 
 ## Important Patterns
 

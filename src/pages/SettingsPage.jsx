@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Bell, Palette, Shield, CreditCard, Zap } from 'lucide-react';
+import { User, Bell, Palette, Shield, CreditCard, Zap, Building2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { OrganizationSettings } from '@/components/settings/OrganizationSettings';
 
 
 const ProfileSettings = () => {
@@ -107,6 +108,7 @@ const AppearanceSettings = () => {
 const SettingsPage = () => {
   const settingTabs = [
     { value: "profile", label: "Profile", icon: User, component: <ProfileSettings /> },
+    { value: "organization", label: "Organization", icon: Building2, component: <OrganizationSettings /> },
     { value: "notifications", label: "Notifications", icon: Bell, component: <NotificationSettings /> },
     { value: "appearance", label: "Appearance", icon: Palette, component: <AppearanceSettings /> },
     { value: "security", label: "Security", icon: Shield, component: <Card><CardHeader><CardTitle>Security (Placeholder)</CardTitle></CardHeader><CardContent><p>Password change, 2FA settings would go here.</p></CardContent></Card> },

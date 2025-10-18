@@ -8,13 +8,213 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned Features
-- Organization system with workspace switcher
-- Team collaboration with role-based permissions
-- Project and task management with real CRUD operations
-- Real-time collaboration with WebSocket updates
-- Billing and subscription management with Stripe
-- Notification system (in-app and email)
-- Analytics and reporting dashboard
+- Kanban board view for tasks
+- Calendar view for task scheduling
+- File attachments and storage
+- Advanced analytics and reporting
+- Email notifications and digests
+- Mobile app (iOS and Android)
+- API for third-party integrations
+
+---
+
+## [0.5.0] - 2025-01-18
+
+### 🎉 Phase 5 Complete - Billing & Subscriptions (Polar)
+
+This release adds complete monetization capabilities with Polar integration.
+
+### Added
+
+#### Polar Payment Integration
+- ✅ Polar API client with 15+ functions (`src/lib/polarClient.ts`)
+- ✅ Secure checkout flow with Polar-hosted payment pages
+- ✅ Environment configuration with `VITE_POLAR_ACCESS_TOKEN`
+- ✅ PCI-compliant payment processing
+- ✅ Webhook handling for subscription events
+
+#### Subscription Plans
+- ✅ Free Plan: 3 projects, 5 members, 100 tasks, 1GB storage
+- ✅ Pro Plan ($15/mo): Unlimited projects/tasks, 25 members, 50GB storage
+- ✅ Enterprise Plan ($49/mo): Unlimited everything, SSO, SLA, dedicated support
+- ✅ Monthly and yearly billing options (20% savings on yearly)
+- ✅ Beautiful pricing page with animated cards (`PricingPlans.tsx`)
+
+#### Subscription Management
+- ✅ SubscriptionContext for global subscription state
+- ✅ SubscriptionSettings component for managing subscriptions
+- ✅ Cancel/reactivate subscription flows
+- ✅ Subscription status indicators (Active, Past Due, Canceling)
+- ✅ Integration with Polar customer portal
+- ✅ Plan change functionality
+
+#### Usage Limits & Enforcement
+- ✅ useUsageLimits hook for real-time usage tracking
+- ✅ Automatic limit enforcement for projects, members, tasks, storage
+- ✅ UsageMetrics component with visual progress bars
+- ✅ Colored progress indicators (green → yellow → orange → red)
+- ✅ "At Limit" and warning badges
+- ✅ Contextual upgrade prompts (UpgradePrompt.tsx)
+- ✅ Inline upgrade CTAs throughout the app
+
+#### Payment Success Flow
+- ✅ CheckoutSuccessPage with celebration animations
+- ✅ Payment verification with Polar API
+- ✅ Automatic database subscription updates
+- ✅ Feature unlock notifications
+
+### Enhanced
+- ✅ App.jsx provider hierarchy updated with SubscriptionProvider
+- ✅ Added `/checkout/success` route
+- ✅ Types enhanced with Polar-specific interfaces
+- ✅ Documentation updated with billing guides
+
+---
+
+## [0.4.0] - 2025-01-18
+
+### 🎉 Phase 4 Complete - Real-time Collaboration
+
+This release transforms FlowSync into a real-time collaborative platform.
+
+### Added
+
+#### Real-time Infrastructure (Supabase Realtime)
+- ✅ RealtimeContext for WebSocket connection management
+- ✅ useRealtimeSubscription hook for database change subscriptions
+- ✅ Real-time types (PresenceState, BroadcastPayload, etc.)
+- ✅ Channel subscription/unsubscription with automatic cleanup
+- ✅ Broadcast messaging between users
+- ✅ Event listening with callback registration
+
+#### Live Updates
+- ✅ Real-time task creation, updates, and deletions
+- ✅ Live comment synchronization across users
+- ✅ Instant UI updates without page refresh
+- ✅ Toast notifications for new items
+- ✅ Optimistic UI updates for instant feedback
+
+#### Presence Tracking
+- ✅ usePresence hook for tracking online users
+- ✅ OnlineUsers component with avatar stacks
+- ✅ Green "online" indicators
+- ✅ Online count badges
+- ✅ Page-specific presence metadata
+- ✅ Automatic presence tracking on mount/unmount
+
+#### Activity Feed
+- ✅ ActivityFeed component with live updates
+- ✅ Real-time activity stream of all organization actions
+- ✅ Animated item insertions with Framer Motion
+- ✅ Action-specific icons (created, updated, deleted, commented)
+- ✅ Time-ago formatting ("just now", "5m ago")
+- ✅ Smart activity descriptions
+
+#### Notification System
+- ✅ NotificationContext for centralized notification management
+- ✅ NotificationBell component in app header
+- ✅ Unread count badge on bell icon
+- ✅ Popover dropdown with scrollable notification list
+- ✅ Mark as read/unread functionality
+- ✅ Clear all notifications
+- ✅ Click to navigate to related content
+- ✅ Persistent storage with localStorage
+- ✅ Toast notifications for instant feedback
+
+### Enhanced
+- ✅ TaskListView with real-time task updates
+- ✅ TaskComments with live comment synchronization
+- ✅ App.jsx provider hierarchy updated
+- ✅ AppHeader integrated with NotificationBell
+
+---
+
+## [0.3.0] - 2025-01-18
+
+### 🎉 Phase 3 Complete - Project & Task Management
+
+This release implements full project and task management capabilities.
+
+### Added
+
+#### Project Management
+- ✅ CreateProjectDialog with color/icon selection
+- ✅ Real project CRUD operations
+- ✅ Project cards with click-to-navigate
+- ✅ Project deletion with confirmation dialogs
+- ✅ Permission-based create/delete buttons
+- ✅ Color-coded project headers
+
+#### Task Management
+- ✅ CreateTaskDialog with full task details
+- ✅ TaskListView component grouped by status
+- ✅ Task completion toggle (checkbox)
+- ✅ Task deletion with confirmation
+- ✅ Priority/status badges
+- ✅ Due date display with overdue highlighting
+- ✅ Assignee selection from organization members
+- ✅ Status filtering (To Do, In Progress, Review, Done)
+
+#### Task Details & Comments
+- ✅ TaskDetailModal with inline editing
+- ✅ Full task field editing (title, description, status, priority, assignee, due date)
+- ✅ TaskComments component
+- ✅ Comment creation and deletion
+- ✅ Permission-based edit/delete buttons
+- ✅ Time-ago formatting for comments
+- ✅ Edit indicator for modified comments
+
+### Enhanced
+- ✅ DashboardPage with real project data
+- ✅ ProjectWorkspacePage with task management
+- ✅ Permission guards for all CRUD operations
+
+---
+
+## [0.2.0] - 2025-01-18
+
+### 🎉 Phase 2 Complete - Multi-Tenancy & Team Collaboration
+
+This release implements the organization system and team management.
+
+### Added
+
+#### Organization System
+- ✅ OrganizationContext with full CRUD operations
+- ✅ OrganizationSwitcher component in app header
+- ✅ Auto-slug generation from organization names
+- ✅ localStorage persistence for current organization
+- ✅ OrganizationSettings component
+- ✅ Logo upload functionality (Supabase Storage ready)
+
+#### Role-Based Access Control
+- ✅ usePermissions hook with granular permission checks
+- ✅ PermissionGuard component for conditional rendering
+- ✅ Permission hierarchy: owner > admin > editor > viewer
+- ✅ UI restrictions based on user role
+- ✅ Role-specific action buttons
+
+#### Invitation System
+- ✅ Email invitations with role selection
+- ✅ Token-based acceptance/decline flow
+- ✅ Public invitation page (`/accept-invitation`)
+- ✅ InviteMemberDialog component
+- ✅ PendingInvitations component
+- ✅ 7-day expiration with validation
+- ✅ Email mismatch warnings
+
+#### Team Management
+- ✅ TeamManagementPage with real data
+- ✅ Role badges with icons (Crown, Shield, Edit, Eye)
+- ✅ Role change functionality (admin+)
+- ✅ Member removal with confirmation
+- ✅ Copy invitation link to clipboard
+- ✅ Revoke invitation functionality
+
+### Enhanced
+- ✅ Database RLS policies for organizations
+- ✅ Auto-organization creation on signup
+- ✅ Member role tracking in database
 
 ---
 

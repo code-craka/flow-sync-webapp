@@ -12,6 +12,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCart } from '@/hooks/useCart';
 import ShoppingCartSidebar from '@/components/ShoppingCart';
+import { OrganizationSwitcher } from '@/components/shared/OrganizationSwitcher';
+import { NotificationBell } from '@/components/shared/NotificationBell';
 
 const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
   const { user, signOut } = useAuth();
@@ -77,10 +79,15 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
             <span className="sr-only">Toggle Menu</span>
           </Button>
         )}
-        <Link to="/app/dashboard" className="flex items-center gap-2 mr-4">
+        <Link to="/app/dashboard" className="flex items-center gap-2">
           <Zap className="h-7 w-7 text-primary" />
           <span className="text-xl font-bold hidden sm:inline">FlowSync<span className="text-primary">AI</span></span>
         </Link>
+      </div>
+
+      {/* Organization Switcher */}
+      <div className="ml-4">
+        <OrganizationSwitcher />
       </div>
 
       <nav className="hidden md:flex items-center gap-1">
@@ -149,50 +156,8 @@ const AppHeader = ({ sidebarOpen, setSidebarOpen }) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DropdownMenu open={notificationsOpen} onOpenChange={setNotificationsOpen}>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative rounded-full">
-              <Bell className="h-5 w-5" />
-              {placeholderNotifications.some(n => n.unread) && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-                </span>
-              )}
-              <span className="sr-only">Notifications</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80 md:w-96 rounded-xl shadow-xl border mt-2 p-0">
-            <DropdownMenuLabel className="p-3 font-semibold flex justify-between items-center border-b">
-              Notifications
-              <Button variant="ghost" size="sm" className="text-xs h-auto py-1">Mark all as read</Button>
-            </DropdownMenuLabel>
-            <ScrollArea className="h-[300px]">
-              {placeholderNotifications.length > 0 ? placeholderNotifications.map(notif => (
-                <DropdownMenuItem key={notif.id} className={`p-3 border-b last:border-b-0 items-start cursor-pointer hover:bg-muted/50 ${notif.unread ? 'bg-primary/5' : ''}`}>
-                  <div className="flex items-start w-full">
-                    <div className={`p-2 rounded-full mr-3 mt-1 ${notif.unread ? 'bg-primary/20' : 'bg-muted'}`}>
-                      <notif.icon className={`h-4 w-4 ${notif.unread ? 'text-primary' : 'text-muted-foreground'}`} />
-                    </div>
-                    <div className="flex-1">
-                      <p className={`text-sm ${notif.unread ? 'font-medium' : ''}`}>{notif.text}</p>
-                      <p className="text-xs text-muted-foreground">{notif.time}</p>
-                    </div>
-                    {notif.unread && <div className="w-2 h-2 bg-primary rounded-full ml-2 mt-1 self-start"></div>}
-                  </div>
-                </DropdownMenuItem>
-              )) : (
-                <div className="p-6 text-center text-muted-foreground">
-                  No new notifications.
-                </div>
-              )}
-            </ScrollArea>
-            <DropdownMenuSeparator className="my-0"/>
-            <DropdownMenuItem className="p-3 justify-center text-sm text-primary cursor-pointer hover:bg-muted/50 rounded-b-xl">
-                View all notifications
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Notification Bell */}
+        <NotificationBell />
 
 
         <DropdownMenu>

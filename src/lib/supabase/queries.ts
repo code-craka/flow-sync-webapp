@@ -457,6 +457,15 @@ export async function declineInvitation(invitationId: string) {
   return data as Invitation;
 }
 
+export async function deleteInvitation(invitationId: string) {
+  const { error } = await supabase
+    .from('invitations')
+    .delete()
+    .eq('id', invitationId);
+
+  if (error) throw error;
+}
+
 // =====================================================
 // ACTIVITY LOGS
 // =====================================================

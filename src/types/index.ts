@@ -1,6 +1,13 @@
 // FlowSync Application Types
 
 export * from './database'
+import type {
+  Organization,
+  MemberRole,
+  TaskStatus,
+  TaskPriority,
+  ProjectStatus,
+} from './database'
 
 // Auth types
 export interface User {
@@ -168,6 +175,7 @@ export interface UsageLimits {
   projects: { used: number; limit: number }
   members: { used: number; limit: number }
   storage: { used: number; limit: number } // in MB
+  tasks: { used: number; limit: number }
 }
 
 export interface PlanFeatures {
@@ -179,7 +187,51 @@ export interface PlanFeatures {
     projects: number
     members: number
     storage: number
+    tasks: number
   }
+  recommended?: boolean
+}
+
+// Polar-specific types
+export interface PolarProduct {
+  id: string
+  name: string
+  description: string
+  prices: PolarPrice[]
+  is_archived: boolean
+  metadata?: Record<string, string>
+}
+
+export interface PolarPrice {
+  id: string
+  amount_type: 'fixed' | 'custom'
+  price_amount: number
+  price_currency: string
+  recurring_interval: 'month' | 'year' | null
+  type: 'one_time' | 'recurring'
+}
+
+export interface PolarCheckoutSession {
+  id: string
+  status: 'open' | 'confirmed' | 'expired'
+  url: string
+  customer_email?: string
+  product_id: string
+  price_id: string
+  success_url: string
+  customer_metadata?: Record<string, string>
+}
+
+export interface PolarSubscription {
+  id: string
+  status: 'active' | 'canceled' | 'incomplete' | 'past_due'
+  current_period_start: string
+  current_period_end: string
+  cancel_at_period_end: boolean
+  customer_id: string
+  product_id: string
+  price_id: string
+  metadata?: Record<string, string>
 }
 
 // Onboarding types
@@ -195,6 +247,43 @@ export interface AppError {
   code: string
   message: string
   details?: any
+}
+
+// Real-time types
+export interface PresenceState {
+  [userId: string]: {
+    user_id: string
+    email?: string
+    online_at: string
+    [key: string]: any
+  }[]
+}
+
+export interface RealtimeContextType {
+  connected: boolean
+  channels: string[]
+  subscribe: (channelName: string, config?: { broadcast?: boolean; presence?: boolean }) => any
+  unsubscribe: (channelName: string) => Promise<void>
+  trackPresence: (channelName: string, metadata?: Record<string, any>) => Promise<void>
+  untrackPresence: (channelName: string) => Promise<void>
+  broadcast: (channelName: string, event: string, payload: any) => Promise<void>
+  listen: (channelName: string, event: string, callback: (payload: any) => void) => () => void
+  getPresence: (channelName: string) => PresenceState | undefined
+  getOnlineUsers: (channelName: string) => any[]
+}
+
+export interface TypingIndicator {
+  user_id: string
+  email: string
+  full_name?: string
+  typing_at: string
+}
+
+export interface BroadcastPayload {
+  type: string
+  event: string
+  payload: any
+  sender_id?: string
 }
 
 // Re-export database types for convenience

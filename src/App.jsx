@@ -16,6 +16,10 @@ import AuthLayout from "@/components/layout/AuthLayout";
 import AppLayout from "@/components/layout/AppLayout";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
+import { OrganizationProvider } from "@/contexts/OrganizationContext";
+import { RealtimeProvider } from "@/contexts/RealtimeContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import TermsPage from "@/pages/legal/TermsPage";
 import PrivacyPolicyPage from "@/pages/legal/PrivacyPolicyPage";
 import Footer from "@/components/layout/Footer";
@@ -37,6 +41,8 @@ import StorePage from "@/pages/StorePage";
 import ProductDetailPage from "@/pages/ProductDetailPage";
 import SuccessPage from "@/pages/SuccessPage";
 import PolarStorePage from "@/pages/PolarStorePage";
+import AcceptInvitationPage from "@/pages/AcceptInvitationPage";
+import CheckoutSuccessPage from "@/pages/CheckoutSuccessPage";
 
 
 const AppRoutes = () => {
@@ -90,7 +96,10 @@ const AppRoutes = () => {
       <Route path="/success" element={<PublicPageLayout><SuccessPage /></PublicPageLayout>} />
       <Route path="/polar-store" element={<PublicPageLayout><PolarStorePage /></PublicPageLayout>} />
 
-      <Route 
+      <Route path="/accept-invitation" element={<AcceptInvitationPage />} />
+      <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+
+      <Route
         path="/app" 
         element={
           session ? <AppLayout /> : <Navigate to="/auth/signin" replace />
@@ -123,8 +132,16 @@ const App = () => {
     <Router>
       <ThemeProvider>
         <AuthProvider>
-          <AppRoutes />
-          <Toaster />
+          <OrganizationProvider>
+            <SubscriptionProvider>
+              <RealtimeProvider>
+                <NotificationProvider>
+                  <AppRoutes />
+                  <Toaster />
+                </NotificationProvider>
+              </RealtimeProvider>
+            </SubscriptionProvider>
+          </OrganizationProvider>
         </AuthProvider>
       </ThemeProvider>
     </Router>
